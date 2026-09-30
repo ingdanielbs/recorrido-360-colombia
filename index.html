@@ -1,0 +1,350 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Experiencias 360° · Colombia</title>
+    <meta
+      name="description"
+      content="Recorridos virtuales inmersivos por los destinos más extraordinarios de Colombia. Compatible con PC y Meta Quest."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <nav class="nav" aria-label="Principal">
+      <a class="nav__brand" href="./">Colombia <span>360°</span></a>
+      <a class="nav__cta" href="./recorrido.html">Iniciar recorrido</a>
+    </nav>
+
+    <main>
+      <section class="hero">
+        <div class="hero__media" aria-hidden="true">
+          <img
+            src="./00.png"
+            alt=""
+            width="4096"
+            height="2048"
+          />
+        </div>
+        <div class="hero__content">
+          <p class="eyebrow">Experiencias 360° · Colombia</p>
+          <h1 class="hero__title">
+            Viaja por Colombia<br />
+            <em>sin salir</em><br />
+            del aula.
+          </h1>
+          <p class="hero__text">
+            Recorridos virtuales inmersivos por los destinos más extraordinarios
+            de Colombia. Bogotá, Medellín, Villa de Leyva, San Agustín y el
+            centro histórico de Cartagena.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#destinos">Ver destinos →</a>
+            <a class="btn btn--ghost btn--play" href="./recorrido.html">
+              Iniciar recorrido
+            </a>
+          </div>
+        </div>
+        <div class="stats" aria-label="Cifras del recorrido">
+          <div class="stats__item">
+            <div class="stats__value">47</div>
+            <div class="stats__label">Destinos disponibles</div>
+          </div>
+          <div class="stats__item">
+            <div class="stats__value">360°</div>
+            <div class="stats__label">Experiencia inmersiva</div>
+          </div>
+          <div class="stats__item">
+            <div class="stats__value">12K+</div>
+            <div class="stats__label">Viajeros virtuales</div>
+          </div>
+          <div class="stats__item">
+            <div class="stats__value">32</div>
+            <div class="stats__label">Departamentos cubiertos</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--wide destinations" id="destinos">
+        <div class="destinations__head">
+          <div>
+            <p class="section__label">Destinos</p>
+            <h2 class="section__title">
+              Colombia en todo<br />
+              <em>su esplendor</em>
+            </h2>
+          </div>
+          <div class="filters" role="tablist" aria-label="Filtrar destinos">
+            <button class="filter is-active" data-filter="todos" type="button">
+              Todos
+            </button>
+            <button class="filter" data-filter="caribe" type="button">Caribe</button>
+            <button class="filter" data-filter="naturaleza" type="button">
+              Naturaleza
+            </button>
+            <button class="filter" data-filter="cultura" type="button">Cultura</button>
+            <button class="filter" data-filter="aventura" type="button">
+              Aventura
+            </button>
+          </div>
+        </div>
+
+        <div class="grid">
+          <article class="card" data-category="caribe cultura">
+            <div class="card__media">
+              <img
+                src="https://images.unsplash.com/photo-1536308037887-165852797016?w=800&h=1000&fit=crop&auto=format"
+                alt="Cartagena"
+                loading="lazy"
+              />
+              <span class="card__badge">360° disponible</span>
+            </div>
+            <p class="card__region">Costa Caribe</p>
+            <h3 class="card__title">Cartagena</h3>
+            <p class="card__text">
+              Camina por las callejuelas coloniales de la Ciudad Amurallada.
+              Fachadas coloridas, balcones floridos y el mar Caribe en el
+              horizonte.
+            </p>
+            <a class="card__link" href="./recorrido.html">Iniciar recorrido →</a>
+          </article>
+
+          <article class="card" data-category="naturaleza aventura">
+            <div class="card__media">
+              <img
+                src="https://images.unsplash.com/photo-1593069567131-53a0614dde1d?w=800&h=1000&fit=crop&auto=format"
+                alt="Amazonas"
+                loading="lazy"
+              />
+              <span class="card__badge">Inmersión total</span>
+            </div>
+            <p class="card__region">Sur de Colombia</p>
+            <h3 class="card__title">Amazonas</h3>
+            <p class="card__text">
+              Adéntrate en el corazón de la selva amazónica colombiana. Una
+              explosión de biodiversidad accesible desde cualquier lugar del
+              mundo.
+            </p>
+            <a class="card__link" href="./recorrido.html">Iniciar recorrido →</a>
+          </article>
+
+          <article class="card" data-category="naturaleza cultura">
+            <div class="card__media">
+              <img
+                src="https://images.unsplash.com/photo-1599582964755-971498d2b4a0?w=800&h=1000&fit=crop&auto=format"
+                alt="Eje Cafetero"
+                loading="lazy"
+              />
+              <span class="card__badge">360° disponible</span>
+            </div>
+            <p class="card__region">Región Andina</p>
+            <h3 class="card__title">Eje Cafetero</h3>
+            <p class="card__text">
+              Paisajes ondulantes de cafetales, guadua y pueblos patrimonio como
+              Salento y Filandia.
+            </p>
+            <a class="card__link" href="./recorrido.html">Iniciar recorrido →</a>
+          </article>
+
+          <article class="card" data-category="caribe naturaleza">
+            <div class="card__media">
+              <img
+                src="https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&h=1000&fit=crop&auto=format"
+                alt="Islas del Rosario"
+                loading="lazy"
+              />
+              <span class="card__badge">360° disponible</span>
+            </div>
+            <p class="card__region">Bolívar</p>
+            <h3 class="card__title">Islas del Rosario</h3>
+            <p class="card__text">
+              Aguas cristalinas del Caribe, corales vivos y el silencio de un
+              archipiélago casi intacto a 35 km de Cartagena.
+            </p>
+            <a class="card__link" href="./recorrido.html">Iniciar recorrido →</a>
+          </article>
+
+          <article class="card" data-category="aventura cultura">
+            <div class="card__media">
+              <img
+                src="https://images.unsplash.com/photo-1610457379304-c1be61eba3d7?w=800&h=1000&fit=crop&auto=format"
+                alt="Ciudad Perdida"
+                loading="lazy"
+              />
+              <span class="card__badge">Inmersión total</span>
+            </div>
+            <p class="card__region">Sierra Nevada</p>
+            <h3 class="card__title">Ciudad Perdida</h3>
+            <p class="card__text">
+              Descubre la ciudad ancestral de los Tayrona. Escalinatas de piedra
+              y terrazas circulares entre niebla y selva densa.
+            </p>
+            <a class="card__link" href="./recorrido.html">Iniciar recorrido →</a>
+          </article>
+
+          <article class="card" data-category="naturaleza aventura">
+            <div class="card__media">
+              <img
+                src="https://images.unsplash.com/photo-1610413260327-ac5ffe5e0146?w=800&h=1000&fit=crop&auto=format"
+                alt="Caño Cristales"
+                loading="lazy"
+              />
+              <span class="card__badge">360° disponible</span>
+            </div>
+            <p class="card__region">Meta</p>
+            <h3 class="card__title">Caño Cristales</h3>
+            <p class="card__text">
+              El «río de los cinco colores». Macarenia clavigera tiñe el lecho
+              del río de rojo, amarillo y verde entre julio y noviembre.
+            </p>
+            <a class="card__link" href="./recorrido.html">Iniciar recorrido →</a>
+          </article>
+        </div>
+
+        <div class="destinations__more">
+          <a class="btn btn--ghost" href="./recorrido.html">
+            Explorar el panorama 360° →
+          </a>
+        </div>
+      </section>
+
+      <section class="section section--wide how" id="como-funciona">
+        <div class="how__media">
+          <img
+            src="https://images.unsplash.com/photo-1605647540924-852290f6b0d5?w=700&h=850&fit=crop&auto=format"
+            alt="Persona explorando un recorrido virtual con lentes VR"
+            loading="lazy"
+          />
+        </div>
+        <div>
+          <p class="section__label">Cómo funciona</p>
+          <h2 class="section__title">Tu ventana al mundo sin fronteras</h2>
+          <p class="section__lead">
+            Tecnología inmersiva 360° capturada en cada rincón del territorio
+            colombiano. Sin descargas. Compatible con navegador, PC y Meta Quest.
+          </p>
+          <div class="steps">
+            <div class="step">
+              <div class="step__num">01</div>
+              <div>
+                <h3 class="step__title">Elige tu destino</h3>
+                <p class="step__text">
+                  Explora el mapa interactivo y selecciona entre destinos únicos
+                  de Colombia.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step__num">02</div>
+              <div>
+                <h3 class="step__title">Sumérgete</h3>
+                <p class="step__text">
+                  Navega en 360° con el mouse, el dedo o los controles VR. En
+                  Quest, entra con el botón WebXR.
+                </p>
+              </div>
+            </div>
+            <div class="step">
+              <div class="step__num">03</div>
+              <div>
+                <h3 class="step__title">Planea tu viaje real</h3>
+                <p class="step__text">
+                  Convierte la experiencia virtual en inspiración para tu próximo
+                  recorrido por Colombia.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section--wide testimonials">
+        <p class="section__label">Testimonios</p>
+        <h2 class="section__title">Lo que dicen quienes ya viajaron</h2>
+        <div class="quotes">
+          <blockquote class="quote">
+            <div class="quote__mark" aria-hidden="true">“</div>
+            <p class="quote__text">
+              Llevaba años soñando con ver Ciudad Perdida. El recorrido virtual
+              me dejó sin palabras — como si realmente hubiera subido esas
+              escalinatas de piedra.
+            </p>
+            <footer>
+              <div class="quote__author">Valentina Restrepo</div>
+              <div class="quote__meta">Bogotá, Colombia</div>
+            </footer>
+          </blockquote>
+          <blockquote class="quote">
+            <div class="quote__mark" aria-hidden="true">“</div>
+            <p class="quote__text">
+              Incredible experience. I visited Cartagena virtually and booked my
+              real trip the next day. The detail is extraordinary.
+            </p>
+            <footer>
+              <div class="quote__author">Marc Delacroix</div>
+              <div class="quote__meta">Lyon, Francia</div>
+            </footer>
+          </blockquote>
+          <blockquote class="quote">
+            <div class="quote__mark" aria-hidden="true">“</div>
+            <p class="quote__text">
+              El Eje Cafetero me enamoró. Ahora entiendo por qué el café
+              colombiano es el mejor del mundo. Reservé mi viaje real en 20
+              minutos.
+            </p>
+            <footer>
+              <div class="quote__author">Laura Méndez</div>
+              <div class="quote__meta">Madrid, España</div>
+            </footer>
+          </blockquote>
+        </div>
+      </section>
+
+      <section class="cta">
+        <div class="cta__media" aria-hidden="true">
+          <img
+            src="./00.png"
+            alt=""
+            width="4096"
+            height="2048"
+          />
+        </div>
+        <div class="cta__content">
+          <p class="section__label" style="justify-content: center; display: inline-flex">
+            Empieza hoy · Es gratis
+          </p>
+          <h2 class="section__title">
+            Colombia te espera.<br />
+            ¿Dónde quieres ir primero?
+          </h2>
+          <p class="section__lead">
+            Acceso gratuito al panorama 360°. Sin tarjeta de crédito. Sin
+            descargas. Funciona en PC y Meta Quest.
+          </p>
+          <div class="cta__form">
+            <a class="btn btn--primary" href="./recorrido.html">
+              ▶ Iniciar recorrido
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>Hecho con amor por Colombia · 2026</p>
+      <div class="footer__links">
+        <a href="#destinos">Destinos</a>
+        <a href="#como-funciona">Cómo funciona</a>
+        <a href="./recorrido.html">Recorrido 360°</a>
+      </div>
+    </footer>
+
+    <script type="module" src="./js/main.js"></script>
+  </body>
+</html>

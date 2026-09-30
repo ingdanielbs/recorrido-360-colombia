@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Recorrido 360° · Colombia</title>
+    <meta
+      name="description"
+      content="Panorama inmersivo 360° de Colombia. Compatible con PC y Meta Quest vía WebXR."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/recorrido.css" />
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+  </head>
+  <body>
+    <div class="loader" id="loader" aria-live="polite">
+      <div class="loader__inner">
+        <h1 class="loader__title">Entrando a <em>Colombia</em></h1>
+        <p class="loader__text">Cargando panorama 360°…</p>
+        <div class="loader__bar" aria-hidden="true"><span></span></div>
+      </div>
+    </div>
+
+    <div class="hud" id="hud">
+      <div class="hud__top">
+        <a class="hud__brand" href="./">Colombia <span>360°</span></a>
+        <div class="hud__actions">
+          <a class="hud__btn" href="./">← Volver</a>
+          <button class="hud__btn hud__btn--primary" id="enter-vr" type="button">
+            Entrar en VR
+          </button>
+        </div>
+      </div>
+      <p class="hud__hint" id="hint">
+        <strong>PC:</strong> arrastra para mirar · rueda para zoom<br />
+        <strong>Meta Quest:</strong> pulsa «Entrar en VR» o el botón WebXR
+      </p>
+    </div>
+
+    <a-scene
+      id="scene"
+      renderer="antialias: true; colorManagement: true; physicallyCorrectLights: true"
+      vr-mode-ui="enabled: true"
+      device-orientation-permission-ui="enabled: true"
+      loading-screen="enabled: false"
+      background="color: #080d08"
+      webxr="optionalFeatures: local-floor, bounded-floor, hand-tracking"
+    >
+      <a-assets timeout="120000">
+        <img
+          id="panorama"
+          src="./00.png"
+          alt="Panorama equirectangular de Colombia"
+          crossorigin="anonymous"
+        />
+      </a-assets>
+
+      <a-sky
+        id="sky"
+        src="#panorama"
+        rotation="0 -90 0"
+        material="shader: flat; side: back"
+      ></a-sky>
+
+      <a-entity
+        id="rig"
+        position="0 0 0"
+      >
+        <a-camera
+          id="camera"
+          look-controls="pointerLockEnabled: false; magicWindowTrackingEnabled: true; touchEnabled: true; mouseEnabled: true"
+          wasd-controls="enabled: false"
+          position="0 1.6 0"
+          fov="80"
+        >
+          <a-entity
+            cursor="fuse: false; rayOrigin: mouse"
+            raycaster="objects: .interactive; far: 20"
+          ></a-entity>
+        </a-camera>
+      </a-entity>
+
+      <a-entity
+        laser-controls="hand: left"
+        raycaster="objects: .interactive; far: 20"
+      ></a-entity>
+      <a-entity
+        laser-controls="hand: right"
+        raycaster="objects: .interactive; far: 20"
+      ></a-entity>
+    </a-scene>
+
+    <script type="module" src="./js/recorrido.js"></script>
+  </body>
+</html>
