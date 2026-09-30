@@ -12,28 +12,30 @@ export const hub = {
   hotspots: [
     {
       id: 'bogota',
-      title: 'Bogotá',
-      subtitle: 'Plaza de Bolívar',
+      title: 'Bogot\u00e1',
+      subtitle: 'Plaza de Bol\u00edvar',
       description:
         'Corazón histórico de Colombia. Catedral Primada, Capitolio Nacional y Palacio de Justicia en un mismo recorrido inmersivo.',
-      u: 0.085,
+      // Costura del panorama: u alto = Catedral en la vista 360
+      u: 0.945,
       v: 0.45,
       tourId: 'bogota',
     },
     {
       id: 'medellin',
-      title: 'Medellín',
+      title: 'Medell\u00edn',
       subtitle: 'Plaza Botero',
       description:
-        'La escultura voluminosa evoca el universo de Fernando Botero y el centro cultural de Medellín.',
-      u: 0.305,
-      v: 0.51,
+        'La escultura voluminosa evoca el universo de Fernando Botero y el centro cultural de Medell\u00edn.',
+      // Botero en el collage (lado opuesto a las estatuas de San Agustín)
+      u: 0.68,
+      v: 0.52,
       tourId: null,
     },
     {
       id: 'colonial',
       title: 'Pueblo colonial',
-      subtitle: 'Andes colombianos',
+      subtitle: 'Villa de Leyva',
       description:
         'Iglesias blancas y tejas de barro al pie de la cordillera: el paisaje típico de los pueblos patrimonio.',
       u: 0.48,
@@ -42,12 +44,12 @@ export const hub = {
     },
     {
       id: 'san-agustin',
-      title: 'San Agustín',
-      subtitle: 'Parque Arqueológico',
+      title: 'San Agust\u00edn',
+      subtitle: 'Parque Arqueol\u00f3gico',
       description:
-        'Estatuas monolíticas precolombinas bajo techumbre de paja: uno de los mayores legados arqueológicos del país.',
-      u: 0.675,
-      v: 0.51,
+        'Estatuas monol\u00edticas precolombinas bajo techumbre de paja: uno de los mayores legados arqueol\u00f3gicos del pa\u00eds.',
+      u: 0.3,
+      v: 0.52,
       tourId: null,
     },
     {
@@ -56,7 +58,7 @@ export const hub = {
       subtitle: 'Torre del Reloj',
       description:
         'La Ciudad Amurallada abre sus puertas al Caribe. Murallas, palmeras y el skyline de Bocagrande al fondo.',
-      u: 0.945,
+      u: 0.085,
       v: 0.44,
       tourId: null,
     },
@@ -66,7 +68,7 @@ export const hub = {
 export const tours = {
   bogota: {
     id: 'bogota',
-    title: 'Bogotá',
+    title: 'Bogot\u00e1',
     startScene: 'plaza',
     scenes: {
       plaza: {
@@ -98,7 +100,7 @@ export const tours = {
           {
             id: 'catedral',
             title: 'Catedral Primada',
-            subtitle: 'Bogotá',
+            subtitle: 'Bogot\u00e1',
             description:
               'La Catedral Primada de Colombia domina el costado oriental de la Plaza de Bolívar.',
             u: 0.68,
@@ -179,7 +181,7 @@ export const tours = {
           {
             id: 'justicia-info',
             title: 'Palacio de Justicia',
-            subtitle: 'Bogotá',
+            subtitle: 'Bogot\u00e1',
             description:
               'Sede de la Corte Suprema, el Consejo de Estado y la Corte Constitucional.',
             u: 0.48,

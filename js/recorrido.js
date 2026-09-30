@@ -54,7 +54,7 @@ function lookAtHotspot(id) {
   const look = camera?.components?.['look-controls'];
   if (!el || !look) return null;
   const pos = el.object3D.getWorldPosition(new window.THREE.Vector3());
-  look.yawObject.rotation.y = Math.atan2(pos.x, -pos.z);
+  look.yawObject.rotation.y = Math.atan2(-pos.x, -pos.z);
   look.pitchObject.rotation.x = Math.max(
     -1.2,
     Math.min(1.2, Math.atan2(pos.y - 1.6, Math.hypot(pos.x, pos.z))),
@@ -127,10 +127,134 @@ function clearHotspots() {
   }
 }
 
+/** Etiqueta con canvas: soporta tildes y alto contraste sobre el panorama. */
+function createLabelCanvas(title, subtitle = '') {
+  const canvas = document.createElement('canvas');
+  // Alta resolución: la tilde (á/í) no se pierde al escalar en 3D
+  canvas.width = 1024;
+  canvas.height = 280;
+  const ctx = canvas.getContext('2d');
+  const safeTitle = String(title).normalize('NFC');
+  const safeSubtitle = String(subtitle || '').normalize('NFC');
+
+  const padX = 24;
+  const padY = 22;
+  const boxW = canvas.width - padX * 2;
+  const boxH = canvas.height - padY * 2;
+  const radius = 28;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Halo negro exterior
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.85)';
+  roundRect(ctx, padX + 8, padY + 10, boxW, boxH, radius);
+  ctx.fill();
+
+  // Placa opaca
+  ctx.fillStyle = '#050805';
+  roundRect(ctx, padX, padY, boxW, boxH, radius);
+  ctx.fill();
+
+  // Doble borde: blanco grueso + dorado
+  ctx.lineWidth = 10;
+  ctx.strokeStyle = '#ffffff';
+  ctx.stroke();
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = '#f0c94a';
+  roundRect(ctx, padX + 8, padY + 8, boxW - 16, boxH - 16, radius - 6);
+  ctx.stroke();
+
+  const titleFont = '"DM Serif Display", "Noto Sans", Georgia, serif';
+  const subFont = '"Noto Sans", "Segoe UI", Arial, sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  const titleY = safeSubtitle ? canvas.height / 2 - 28 : canvas.height / 2;
+  drawAccentedLine(ctx, safeTitle, canvas.width / 2, titleY, `700 86px ${titleFont}`, '#ffffff', 12);
+
+  if (safeSubtitle) {
+    drawAccentedLine(
+      ctx,
+      safeSubtitle,
+      canvas.width / 2,
+      canvas.height / 2 + 42,
+      `600 42px ${subFont}`,
+      '#ffe08a',
+      6,
+    );
+  }
+
+  return canvas;
+}
+
+const ACCENT_MAP = {
+  á: 'a',
+  é: 'e',
+  í: 'i',
+  ó: 'o',
+  ú: 'u',
+  Á: 'A',
+  É: 'E',
+  Í: 'I',
+  Ó: 'O',
+  Ú: 'U',
+};
+
+/** Texto con tilde dibujada a mano (más legible en texturas 3D pequeñas). */
+function drawAccentedLine(ctx, text, centerX, y, font, fill, strokeW) {
+  ctx.font = font;
+  const fontSize = Number(String(font).match(/(\d+)px/)?.[1] || 48);
+  const chars = [...text];
+  const widths = chars.map((ch) => ctx.measureText(ACCENT_MAP[ch] || ch).width);
+  const total = widths.reduce((a, b) => a + b, 0);
+  let x = centerX - total / 2;
+
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  chars.forEach((ch, i) => {
+    const base = ACCENT_MAP[ch] || ch;
+    const w = widths[i];
+    const cx = x + w / 2;
+    ctx.lineWidth = strokeW;
+    ctx.strokeStyle = '#000000';
+    ctx.fillStyle = fill;
+    ctx.textAlign = 'center';
+    ctx.strokeText(base, cx, y);
+    ctx.fillText(base, cx, y);
+
+    if (ACCENT_MAP[ch]) {
+      const ax = cx + fontSize * 0.02;
+      const ay = y - fontSize * 0.52;
+      ctx.lineWidth = Math.max(4, fontSize * 0.1);
+      ctx.strokeStyle = '#000000';
+      ctx.beginPath();
+      ctx.moveTo(ax - fontSize * 0.1, ay + fontSize * 0.08);
+      ctx.lineTo(ax + fontSize * 0.12, ay - fontSize * 0.14);
+      ctx.stroke();
+      ctx.lineWidth = Math.max(2.5, fontSize * 0.07);
+      ctx.strokeStyle = fill;
+      ctx.stroke();
+    }
+    x += w;
+  });
+
+  ctx.textAlign = 'center';
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
 function createHotspotEntity(hotspot) {
   const { x, y, z } = uvToPosition(hotspot.u ?? 0.5, hotspot.v ?? 0.5);
   const isHome = hotspot.variant === 'home';
-  const color = isHome ? '#f0ebe0' : '#c8a84b';
 
   const root = document.createElement('a-entity');
   root.setAttribute('class', 'interactive hotspot');
@@ -138,50 +262,62 @@ function createHotspotEntity(hotspot) {
   root.setAttribute('billboard', '');
   root.dataset.hotspotId = hotspot.id;
 
+  // Marcador: halo negro + anillo blanco pulsante + núcleo dorado (alto contraste)
+  const halo = document.createElement('a-entity');
+  halo.setAttribute('geometry', 'primitive: circle; radius: 0.85');
+  halo.setAttribute(
+    'material',
+    'color: #000000; opacity: 0.95; shader: flat; side: double; transparent: true',
+  );
+  halo.setAttribute('position', '0 0 -0.03');
+
   const pulse = document.createElement('a-entity');
-  pulse.setAttribute('geometry', 'primitive: ring; radiusInner: 0.22; radiusOuter: 0.34');
+  pulse.setAttribute('geometry', 'primitive: ring; radiusInner: 0.42; radiusOuter: 0.72');
   pulse.setAttribute(
     'material',
-    `color: ${color}; opacity: 0.85; shader: flat; side: double; transparent: true`,
+    'color: #ffffff; opacity: 1; shader: flat; side: double; transparent: true',
   );
   pulse.setAttribute(
     'animation',
-    'property: scale; from: 1 1 1; to: 1.25 1.25 1.25; dir: alternate; loop: true; dur: 1400; easing: easeInOutSine',
+    'property: scale; from: 1 1 1; to: 1.28 1.28 1.28; dir: alternate; loop: true; dur: 1100; easing: easeInOutSine',
+  );
+
+  const ringGold = document.createElement('a-entity');
+  ringGold.setAttribute('geometry', 'primitive: ring; radiusInner: 0.28; radiusOuter: 0.45');
+  ringGold.setAttribute(
+    'material',
+    `color: ${isHome ? '#ffffff' : '#ffd24a'}; opacity: 1; shader: flat; side: double`,
   );
 
   const core = document.createElement('a-entity');
-  core.setAttribute('geometry', 'primitive: circle; radius: 0.14');
+  core.setAttribute('geometry', 'primitive: circle; radius: 0.26');
   core.setAttribute(
     'material',
-    `color: ${color}; opacity: 0.95; shader: flat; side: double; transparent: true`,
+    'color: #ffffff; opacity: 1; shader: flat; side: double',
   );
   core.setAttribute('class', 'interactive');
+  core.setAttribute('position', '0 0 0.01');
 
-  const label = document.createElement('a-text');
-  label.setAttribute('value', hotspot.title);
-  label.setAttribute('align', 'center');
-  label.setAttribute('baseline', 'bottom');
-  label.setAttribute('position', '0 0.48 0');
-  label.setAttribute('width', '5');
-  label.setAttribute('color', '#f0ebe0');
-  label.setAttribute(
-    'font',
-    'https://cdn.aframe.io/fonts/Exo2Bold.fnt',
+  const labelCanvas = createLabelCanvas(hotspot.title, hotspot.subtitle || '');
+  const label = document.createElement('a-image');
+  label.setAttribute('src', labelCanvas.toDataURL('image/png'));
+  label.setAttribute('width', '4.2');
+  label.setAttribute('height', '1.15');
+  label.setAttribute('position', '0 1.45 0.04');
+  label.setAttribute('material', 'shader: flat; transparent: true; alphaTest: 0.05; depthTest: true');
+  label.classList.add('interactive');
+
+  // Placa negra detrás del texto (por si la textura pierde opacidad)
+  const labelBack = document.createElement('a-plane');
+  labelBack.setAttribute('width', '4.0');
+  labelBack.setAttribute('height', '1.05');
+  labelBack.setAttribute('position', '0 1.45 0.02');
+  labelBack.setAttribute(
+    'material',
+    'color: #000000; opacity: 0.75; shader: flat; transparent: true; side: double',
   );
 
-  const shadow = document.createElement('a-text');
-  shadow.setAttribute('value', hotspot.subtitle || '');
-  shadow.setAttribute('align', 'center');
-  shadow.setAttribute('baseline', 'top');
-  shadow.setAttribute('position', '0 0.42 0');
-  shadow.setAttribute('width', '4');
-  shadow.setAttribute('color', color);
-  shadow.setAttribute(
-    'font',
-    'https://cdn.aframe.io/fonts/Exo2Bold.fnt',
-  );
-
-  root.append(pulse, core, label, shadow);
+  root.append(halo, pulse, ringGold, core, labelBack, label);
 
   const onActivate = (event) => {
     event.stopPropagation();
@@ -217,6 +353,7 @@ function createHotspotEntity(hotspot) {
 
   root.addEventListener('click', onActivate);
   core.addEventListener('click', onActivate);
+  label.addEventListener('click', onActivate);
 
   return root;
 }
@@ -226,9 +363,18 @@ function hotspotLayerRotation(skyRotation = '0 -90 0') {
   return `0 ${-skyYaw} 0`;
 }
 
-function renderHotspots(config) {
+async function renderHotspots(config) {
   clearHotspots();
   hotspotLayer.setAttribute('rotation', hotspotLayerRotation(config.skyRotation));
+
+  try {
+    await document.fonts.load('700 86px "DM Serif Display"');
+    await document.fonts.load('700 78px "Noto Sans"');
+    await document.fonts.load('600 42px "Noto Sans"');
+    await document.fonts.ready;
+  } catch {
+    // Fallback: Segoe UI / Arial
+  }
 
   for (const hotspot of config.hotspots || []) {
     hotspotLayer.appendChild(createHotspotEntity(hotspot));
@@ -296,7 +442,7 @@ function loadScene(tourId, sceneId) {
   currentTourId = tourId;
   currentSceneId = sceneId;
   setSky(scene.src, scene.skyRotation);
-  renderHotspots(scene);
+  void renderHotspots(scene);
   updateTourNav();
 
   if (sceneLabel) {
@@ -316,7 +462,7 @@ function enterHub() {
   currentTourId = 'hub';
   currentSceneId = null;
   setSky(hub.src, hub.skyRotation);
-  renderHotspots(hub);
+  void renderHotspots(hub);
   updateTourNav();
   if (sceneLabel) {
     sceneLabel.textContent = hub.title;

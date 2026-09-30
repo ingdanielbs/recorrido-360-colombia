@@ -67,7 +67,8 @@ a-scene {
   font-size: 0.75rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: #f0ebe0;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 12px rgba(0, 0, 0, 0.7);
 }
 
 .tour-nav {
@@ -130,11 +131,11 @@ a-scene {
   position: relative;
   width: min(100%, 24rem);
   padding: 1.4rem 1.5rem 1.5rem;
-  border: 1px solid var(--border);
+  border: 1px solid var(--gold);
   border-radius: 2px;
-  background: rgba(8, 13, 8, 0.9);
+  background: rgba(8, 13, 8, 0.94);
   backdrop-filter: blur(14px);
-  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
 }
 
 .info-panel__close {
