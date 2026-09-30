@@ -247,8 +247,14 @@ function updateTourNav() {
 }
 
 function setSky(src, rotation = '0 -90 0') {
+  const absolute = new URL(src, window.location.href).href;
   skyEl.setAttribute('rotation', rotation);
-  skyEl.setAttribute('src', src);
+  skyEl.setAttribute('material', {
+    shader: 'flat',
+    side: 'back',
+    src: absolute,
+  });
+  skyEl.setAttribute('src', absolute);
 }
 
 function loadScene(tourId, sceneId) {

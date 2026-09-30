@@ -8,7 +8,7 @@
 export const hub = {
   id: 'hub',
   title: 'Colombia 360°',
-  src: '#panorama-hub',
+  src: './00.png',
   skyRotation: '0 -90 0',
   hotspots: [
     {
@@ -73,7 +73,7 @@ export const tours = {
       plaza: {
         id: 'plaza',
         title: 'Plaza de Bolívar',
-        src: '#panorama-plaza',
+        src: './Bogota/01%20Plaza.png',
         skyRotation: '0 -90 0',
         hotspots: [
           {
@@ -120,7 +120,7 @@ export const tours = {
       congreso: {
         id: 'congreso',
         title: 'Capitolio Nacional',
-        src: '#panorama-congreso',
+        src: './Bogota/02%20Congreso.png',
         skyRotation: '0 -90 0',
         hotspots: [
           {
@@ -165,7 +165,7 @@ export const tours = {
       justicia: {
         id: 'justicia',
         title: 'Palacio de Justicia',
-        src: '#panorama-justicia',
+        src: './Bogota/03%20Palacio%20de%20justicia.png',
         skyRotation: '0 -90 0',
         hotspots: [
           {
