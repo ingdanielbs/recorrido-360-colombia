@@ -7,7 +7,8 @@ const base = process.env.VITE_BASE || (repoName ? `/${repoName}/` : '/');
 
 export default defineConfig(({ command }) => ({
   base,
-  plugins: command === 'serve' ? [basicSsl()] : [],
+  // basicSsl solo si VITE_HTTPS=1 (Meta Quest en LAN); en local HTTP basta para probar
+  plugins: command === 'serve' && process.env.VITE_HTTPS === '1' ? [basicSsl()] : [],
   server: {
     host: true,
     port: 5173,

@@ -47,8 +47,11 @@ a-scene {
   background: linear-gradient(rgba(8, 13, 8, 0.85), transparent);
 }
 
-.hud__brand {
+.hud__brand-wrap {
   pointer-events: auto;
+}
+
+.hud__brand {
   font-family: var(--font-display);
   font-size: 1.1rem;
   color: var(--cream);
@@ -57,6 +60,144 @@ a-scene {
 
 .hud__brand span {
   color: var(--gold);
+}
+
+.hud__scene {
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.tour-nav {
+  position: absolute;
+  top: 4.5rem;
+  left: 1.5rem;
+  right: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  pointer-events: auto;
+  max-width: 42rem;
+}
+
+.tour-chip {
+  padding: 0.45rem 0.8rem;
+  border: 1px solid rgba(240, 235, 224, 0.18);
+  border-radius: 2px;
+  background: rgba(8, 13, 8, 0.62);
+  color: var(--cream);
+  font: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, color 0.2s, background-color 0.2s;
+}
+
+.tour-chip:hover,
+.tour-chip.is-active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.tour-chip.is-active {
+  background: rgba(200, 168, 75, 0.12);
+}
+
+.info-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: end center;
+  padding: 1.25rem;
+  padding-bottom: 5.5rem;
+  background: transparent;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.info-panel.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.info-panel__card {
+  position: relative;
+  width: min(100%, 24rem);
+  padding: 1.4rem 1.5rem 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: rgba(8, 13, 8, 0.9);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+.info-panel__close {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.7rem;
+  border: none;
+  background: none;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.info-panel__close:hover {
+  color: var(--gold);
+}
+
+.info-panel__subtitle {
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+
+.info-panel__title {
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  font-weight: 400;
+  margin-bottom: 0.65rem;
+}
+
+.info-panel__text {
+  color: var(--muted);
+  font-size: 0.92rem;
+  line-height: 1.55;
+  margin-bottom: 1.15rem;
+}
+
+.info-panel__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: none;
+  border-radius: 2px;
+  background: var(--gold);
+  color: var(--bg);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.info-panel__action:hover:not(:disabled) {
+  background: #d4b65a;
+}
+
+.info-panel__action:disabled {
+  opacity: 0.55;
+  cursor: default;
 }
 
 .hud__actions {
