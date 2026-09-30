@@ -86,13 +86,12 @@
         rotation="0 -90 0"
         material="shader: flat; side: back"
       ></a-sky>
-
-      <a-entity id="hotspot-layer"></a-entity>
+      <a-entity id="hotspot-layer" rotation="0 90 0"></a-entity>
 
       <a-entity id="rig" position="0 0 0">
         <a-camera
           id="camera"
-          look-controls="pointerLockEnabled: false; magicWindowTrackingEnabled: true; touchEnabled: true; mouseEnabled: true"
+          look-controls="pointerLockEnabled: false; magicWindowTrackingEnabled: false; touchEnabled: true; mouseEnabled: true"
           wasd-controls="enabled: false"
           position="0 1.6 0"
           fov="80"

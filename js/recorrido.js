@@ -33,17 +33,36 @@ let currentSceneId = null;
 let activeHotspot = null;
 let fov = 80;
 
-/** yaw/pitch en grados → posición en la esfera (yaw 0 = frente a la cámara). */
-function angularToPosition(yawDeg, pitchDeg) {
-  const yaw = (yawDeg * Math.PI) / 180;
-  const pitch = (pitchDeg * Math.PI) / 180;
+/**
+ * u/v → posición local (SphereGeometry).
+ * #hotspot-layer usa yaw = -yaw del cielo (cielo -90° → capa +90°).
+ */
+function uvToPosition(u, v) {
+  const theta = u * Math.PI * 2;
+  const phi = v * Math.PI;
 
   return {
-    x: RADIUS * Math.cos(pitch) * Math.sin(yaw),
-    y: RADIUS * Math.sin(pitch),
-    z: -RADIUS * Math.cos(pitch) * Math.cos(yaw),
+    x: -RADIUS * Math.sin(phi) * Math.cos(theta),
+    y: RADIUS * Math.cos(phi),
+    z: RADIUS * Math.sin(phi) * Math.sin(theta),
   };
 }
+
+/** Apunta la cámara al hotspot (útil para calibrar). */
+function lookAtHotspot(id) {
+  const el = document.querySelector(`[data-hotspot-id="${id}"]`);
+  const look = camera?.components?.['look-controls'];
+  if (!el || !look) return null;
+  const pos = el.object3D.getWorldPosition(new window.THREE.Vector3());
+  look.yawObject.rotation.y = Math.atan2(pos.x, -pos.z);
+  look.pitchObject.rotation.x = Math.max(
+    -1.2,
+    Math.min(1.2, Math.atan2(pos.y - 1.6, Math.hypot(pos.x, pos.z))),
+  );
+  return id;
+}
+
+window.__lookAtHotspot = lookAtHotspot;
 
 function getSceneConfig() {
   if (currentTourId === 'hub') return hub;
@@ -109,7 +128,7 @@ function clearHotspots() {
 }
 
 function createHotspotEntity(hotspot) {
-  const { x, y, z } = angularToPosition(hotspot.yaw ?? 0, hotspot.pitch ?? 0);
+  const { x, y, z } = uvToPosition(hotspot.u ?? 0.5, hotspot.v ?? 0.5);
   const isHome = hotspot.variant === 'home';
   const color = isHome ? '#f0ebe0' : '#c8a84b';
 
@@ -202,9 +221,14 @@ function createHotspotEntity(hotspot) {
   return root;
 }
 
+function hotspotLayerRotation(skyRotation = '0 -90 0') {
+  const skyYaw = Number(String(skyRotation).trim().split(/\s+/)[1]) || 0;
+  return `0 ${-skyYaw} 0`;
+}
+
 function renderHotspots(config) {
   clearHotspots();
-  hotspotLayer.setAttribute('rotation', '0 0 0');
+  hotspotLayer.setAttribute('rotation', hotspotLayerRotation(config.skyRotation));
 
   for (const hotspot of config.hotspots || []) {
     hotspotLayer.appendChild(createHotspotEntity(hotspot));
